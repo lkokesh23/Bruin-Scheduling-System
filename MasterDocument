@@ -1,2 +1,10 @@
 10/5/26 JPM
-Changing original plan from using google doc to being able to use google calendar integration. This way schedules can be seen and corroborated into schedules.
+Changing original plan from using google doc to being able to use google calendar integration. 
+This way schedules can be seen and corroborated into schedules.
+
+10/5/26 JPM
+Baseline functions from user stories
+	Create Events for all
+	Share Events for google cal
+	Claim scheduled events
+	Create repeated events 
