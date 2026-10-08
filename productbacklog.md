@@ -7,4 +7,4 @@
 | US-05 | As a GFU student, I want to create a weekly schedule that includes my classes and daily events. | High | 5 | US-01 |
 | US-06 | As a user, I want to have public events on my account so viewers can see without having to contact. | medium | 5 | US-03 US-02 |
 | US-07 | As a user, I want to have private events on my account so I can have select people see the event. | medium | 5 | US-03 US-02 |
-| US-08 | As a GFU student, I want to create my own account and fill it with my details to share with others. | medium | 3 | US-01 |
+| US-08 | As a GFU student, I want to create my own account and fill it with my details to share with others. | High | 3 | US-01 |
