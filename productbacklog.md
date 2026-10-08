@@ -5,4 +5,4 @@
 | US-03 | As a GFU student, I want to access the account directory to view others' schedules and free times. | High | 13 | US-01 |
 | US-04 | As a user, I want to create an event so I know who can come and who can't. | High |  5  |  US-01 US-02  |
 | US-05 | As a GFU student, I want to create a weekly schedule that includes my classes and daily events. | High | 5 | US-01 |
-| us-06 | As a user, I want to have public events on my account so viewers can see without having to contact. | High | 5 | 
+| us-06 | As a user, I want to have public events on my account so viewers can see without having to contact. | High | 5 | us-03 |
