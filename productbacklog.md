@@ -8,3 +8,6 @@
 | US-06 | As a user, I want to have public events on my account so viewers can see without having to contact. | medium | 5 | US-03 US-02 |
 | US-07 | As a user, I want to have private events on my account so I can have select people see the event. | medium | 5 | US-03 US-02 |
 | US-08 | As a GFU student, I want to create my own account and fill it with my details to share with others. | High | 3 | US-01 |
+
+We prioritized the requirements that are necessary for our product to be useful and complete, and also have some that would be good features, but are not necessary.
+Some are very basic and only have 1 story point, and others, like the account directory, have many story points.
