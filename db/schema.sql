@@ -1,36 +1,34 @@
-CREATE TABLE student_account (
-	student_ID INT PRIMARY KEY,
+CREATE TABLE account (
+	ID INT PRIMARY KEY,
 	first_name VARCHAR(50),
 	last_name VARCHAR(50),
-	email VARCHAR(100),
-	major VARCHAR(50)
-);
-
-CREATE TABLE professor_account (
-	employee_ID INT PRIMARY KEY,
-	first_name VARCHAR(50),
-	last_name VARCHAR(50),
-	email VARCHAR(100),
+	email VARCHAR(100)
 );
 
 CREATE TABLE professor (
-	professor_ID INT FOREIGN KEY,
+	ID INT PRIMARY KEY,
 	courses_taught TEXT[],
-	office_hours VARCHAR(255)
+	office_hours VARCHAR(255),
+	department VARCHAR(50),
+	FOREIGN KEY (ID) REFERENCES account(ID)
 );
 
 CREATE TABLE ta (
-	student_ID INT FOREIGN KEY,
+	ID INT PRIMARY KEY,
 	professor_ID INT FOREIGN KEY,
-	course_ID INT
+	course_ID INT,
+	FOREIGN KEY (ID) REFERENCES account(ID)
 );
 
 CREATE TABLE student (
-	student_ID INT FOREIGN KEY,
-	class_schedule TEXT[]
+	ID INT PRIMARY KEY,
+	class_schedule TEXT[],
+	major VARCHAR(50),
+	FOREIGN KEY (ID) REFERENCES account(ID)
 );
 
 CREATE TABLE event (
+	creator_ID INT FOREIGN KEY,
 	event_id INT PRIMARY KEY,
 	participants TEXT[],
 	time DATETIME,
