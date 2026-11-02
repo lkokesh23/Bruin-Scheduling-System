@@ -31,7 +31,6 @@ CREATE TABLE student (
 CREATE TABLE event (
 	event_id INT PRIMARY KEY,
 	creator_id INT FOREIGN KEY,
-	participants TEXT[],
 	time DATETIME,
 	location VARCHAR(100)
 	
@@ -39,9 +38,20 @@ CREATE TABLE event (
 );
 
 CREATE TABLE calendar (
-	events TEXT[],
-	dates TEXT[]
+	owner_id INT PRIMARY KEY,
+	
+	FOREIGN KEY (owner_id) REFERENCES account(account_id)
 };
+
+CREATE TABLE calendar_event (
+	calendar_id INT FOREIGN KEY,
+	event_id INT FOREIGN KEY,
+	
+	PRIMARY KEY (calendar_id, event_id),
+	
+	FOREIGN KEY (calendar_id) REFERENCES calendar(owner_id),
+	FOREIGN KEY (event_id) REFERENCES event(event_id)
+);
 
 CREATE TABLE event_roster (
 	account_id INT FOREIGN KEY,
