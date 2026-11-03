@@ -29,7 +29,7 @@ CREATE TABLE student (
 CREATE TABLE event (
 	event_id INT PRIMARY KEY,
 	creator_id INT,
-	time DATETIME,
+	time TIMESTAMP,
 	location VARCHAR(100),
 	
 	FOREIGN KEY (creator_id) REFERENCES account(account_id)
