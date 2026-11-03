@@ -7,7 +7,6 @@ CREATE TABLE account (
 
 CREATE TABLE professor (
 	account_id INT PRIMARY KEY,
-	courses_taught TEXT[],
 	office_hours VARCHAR(255),
 	department VARCHAR(50),
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
@@ -15,7 +14,7 @@ CREATE TABLE professor (
 
 CREATE TABLE ta (
 	account_id INT PRIMARY KEY,
-	professor_id INT FOREIGN KEY,
+	professor_id INT,
 	course_id INT,
 	FOREIGN KEY (account_id) REFERENCES account(account_id),
 	FOREIGN KEY (professor_id) REFERENCES professor(account_id)
@@ -23,36 +22,26 @@ CREATE TABLE ta (
 
 CREATE TABLE student (
 	account_id INT PRIMARY KEY,
-	class_schedule TEXT[],
 	major VARCHAR(50),
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
 CREATE TABLE event (
 	event_id INT PRIMARY KEY,
-	creator_id INT FOREIGN KEY,
+	creator_id INT,
 	time DATETIME,
-	location VARCHAR(100)
+	location VARCHAR(100),
 	
 	FOREIGN KEY (creator_id) REFERENCES account(account_id)
 );
 
 CREATE TABLE calendar (
-	owner_id INT FOREIGN KEY,
-	event_id INT FOREIGN KEY,
+	owner_id INT,
+	event_id INT,
+	status VARCHAR(20) DEFAULT 'Pending',
 	
 	PRIMARY KEY (owner_id, event_id),
 	
 	FOREIGN KEY (owner_id) REFERENCES account(account_id),
 	FOREIGN KEY (event_id) REFERENCES event(event_id)
-};
-
-CREATE TABLE event_roster (
-	account_id INT FOREIGN KEY,
-	event_id INT FOREIGN KEY,
-	
-	PRIMARY KEY (account_id, event_id),
-	
-	FOREIGN KEY (account_id) REFERENCES account(account_id),
-	FOREIGN KEY (event_id) REFERENCES event(event_id)
-);	
+);
