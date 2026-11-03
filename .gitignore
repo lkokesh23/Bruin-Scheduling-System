@@ -1,0 +1,11 @@
+# Ignore environment variables and secrets
+.env
+.env.local
+*.env
+
+# Ignore system & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.neon
+node_modules/
