@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // 3. Attach global middleware
-app.use(cors());          // Allows your React frontend to send requests to this server
+app.use(cors());          // Allows React frontend to send requests to this server
 app.use(express.json());  // Parses incoming JSON request bodies
 
 // 4. Register API route handlers

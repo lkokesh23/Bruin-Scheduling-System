@@ -7,21 +7,21 @@ router.get('/:userId', async (req, res) => {
 	const {userId} = req.params;
 	
 	try {
-		const query = '
-		SELECT 
-			e.event_id,
-			e.location,
-			e.time AS start_time,
-			c.status,
-			acc.first_name || ' ' || acc.last_name AS creator_name
-		FROM calendar c
-		JOIN event e ON c.event_id = e.event_id
-		JOIN account acc ON e.creator_id = acc.account_id
-		WHERE c.owner_id = $1
-		ORDER BY e.time ASC;
-	';
+		const query = `
+			SELECT 
+				e.event_id,
+				e.location,
+				e.time AS start_time,
+				c.status,
+				acc.first_name || ' ' || acc.last_name AS creator_name
+			FROM calendar c
+			JOIN event e ON c.event_id = e.event_id
+			JOIN account acc ON e.creator_id = acc.account_id
+			WHERE c.owner_id = $1
+			ORDER BY e.time ASC;
+	`;
 	
-	const { rows } = await db.query(quer, [userId]);
+	const { rows } = await db.query(query, [userId]);
 	const formattedEvents = rows.map((row) => {
 
 	const startDate = new Date(row.start_time);
@@ -50,6 +50,9 @@ router.get('/:userId', async (req, res) => {
 
 	
 	res.json(formattedEvents);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: 'Database query failed' });
 	}
 });
 
