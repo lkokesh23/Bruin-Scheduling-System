@@ -32,50 +32,54 @@ For our system, we will be storing user information, event dates and times, coll
 
 # High-Level Database Schema
 
-## Student - Account
+## Account
 
 | Attribute | Data Type | Constraints |
 |---|---|---|
-| student_ID | Integer | Primary Key |
-| name | String | |
+| account_id | Integer | Primary Key |
+| first_name | String | |
+| last_name | String ||
 | email | String | |
+
+## Professor
+
+| Attribute | Data Type | Constraints |
+|---|---|---|
+| account_id | Integer | Primary Foreign Key |
+| office_hours | String | |
+| department | String | |
+
+## TA
+
+| Attribute | Data Type | Constraints |
+|---|---|---|
+| account_id | Integer | Primary Foreign Key |
+| professor_id | Integer | Foreign Key |
+| course_id | Integer | |
+
+## Student
+| Attribute | Data Type | Constraints |
+|---|---|---|
+| account_id | Integer | Primary Foreign Key |
 | major | String | |
 
-## Professor - Account
+## Event
 
 | Attribute | Data Type | Constraints |
 |---|---|---|
-| employee_ID | Integer | Primary Key |
-| name | String | |
-| email | String | |
-| coursesTaught | String[] | |
-| officeHours | String | |
-
-## TA - Account
-
-| Attribute | Data Type | Constraints |
-|---|---|---|
-| student_ID | Integer | Primary Key |
-| name | String | |
-| email | String | |
-| major | String | |
-| TA_Courses | String[] | |
-
-## Event - Calendar
-
-| Attribute | Data Type | Constraints |
-|---|---|---|
-| participants | String[] | |
-| time | String | |
+| event_id | Integer | Primary Key |
+| creator_id | Integer | Foreign Key |
+| time | TIMESTAMP | |
 | location | String | |
-| date | String | |
 
 ## Calendar
 
 | Attribute | Data Type | Constraints |
 |---|---|---|
-| events | String[] | |
-| dates | String[] | |
+| owner_id | Integer | Foreign Key |
+| event_id | Integer | Foreign Key |
+| status | String | |
+| owner_id + event_id | Integer | Joint Primary Key |
 
 George Fox University CS/IS/Cyber Java Coding Style Guidelines\
 https://bwilson.cs.georgefox.edu/GFUCodingStyleDoc.pdf \
