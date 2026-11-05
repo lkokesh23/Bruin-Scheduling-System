@@ -47,7 +47,10 @@ function changePassword(username, oldPassword, newPassword){
         return "User not found.";
     }
     if(user.password!== oldPassword){
-        return "Wrong Password)
+        return "Wrong Password")
+    }
+    if(user.password==oldPassword{
+        return "You already used this password, enter a new one!"
     }
     user.password=newPassword;
     return "Password is now changd.";
