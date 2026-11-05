@@ -3,6 +3,7 @@
  * Events.js
  * University Scheduling System
  * Events management section
+ * Used a.i. to learn javascript and help write the Events Page!
  */
 
 // Stores all university events
