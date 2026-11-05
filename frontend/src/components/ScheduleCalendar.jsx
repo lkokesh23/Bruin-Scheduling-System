@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/react/daygrid';
+import timeGridPlugin from '@fullcalendar/react/timegrid';
+import interactionPlugin from '@fullcalendar/react/interaction';
 
 export default function ScheduleCalendar({ userId }) {
   const [events, setEvents] = useState([]);
@@ -19,7 +19,12 @@ export default function ScheduleCalendar({ userId }) {
         return res.json();
       })
       .then((data) => {
-        setEvents(data);
+        if (Array.isArray(data)) {
+          setEvents(data);
+        } else {
+          console.error('Expected array of events but received:', data);
+          setEvents([]);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -49,7 +54,8 @@ export default function ScheduleCalendar({ userId }) {
         
         // Custom rendering for event items inside the calendar cells
         eventContent={(eventInfo) => {
-          const { location, creator, status } = eventInfo.event.extendedProps;
+          const {location, creator, status} = eventInfo.event.extendedProps || {};
+          const title = eventInfo.event.title || 'Untitled Event';
           return (
             <div style={{ padding: '2px', fontSize: '0.85em' }}>
               <strong>{eventInfo.event.title}</strong>
