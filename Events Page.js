@@ -200,6 +200,7 @@ function getEventsByDate(date) {
 
 
 // Checks if two events overlap
+//gives a message if this happens.
 function eventsOverlap(event1, event2) {
 
     if (event1.date !== event2.date) {
