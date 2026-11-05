@@ -40,4 +40,14 @@ funcion updateUser(username,email,major){
 
     return "Account updated";
 }
-    
+//change a users password
+function changePassword(username, oldPassword, newPassword){
+    let user = getUser(username);
+    if(user ===null){
+        return "User not found.";
+    }
+    if(user.password!== oldPassword){
+        return "Wrong Password)
+    }
+    user.password=newPassword;
+    return "Password is now changd.";
