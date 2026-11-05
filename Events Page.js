@@ -15,9 +15,9 @@ let events = [
         date: "2026-11-05",
         startTime: "15:00",
         endTime: "16:30",
-        location: "Library Room 204",
+        location: "Library Room 201",
         organizer: "Kaeden",
-        attendees: ["Kaeden", "Alex", "Jordan"],
+        attendees: ["Kaeden", "bob"],
         maxAttendees: 10,
         category: "Study Group"
     },
