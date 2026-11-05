@@ -38,7 +38,7 @@ funcion updateUser(username,email,major){
     user.email = email;
     user.major=major;
 
-    return "Account updated";
+    return "The accound has been correctly updated";
 }
 //change a users password
 function changePassword(username, oldPassword, newPassword){
