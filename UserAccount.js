@@ -21,3 +21,13 @@ function createAccount(username, email, password, major) {
 
 // Finds a user by username
 function getUser(username) {
+    for(let user of users) {
+        if(user.username === username){
+            return user;
+        }
+    }
+    return null;
+}
+
+//Updates the user info
+funcion updateUser(username,email,major){
