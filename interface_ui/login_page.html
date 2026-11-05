@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GFU Calendar | Login</title>
+</head>
+<body>
+
+    <h1>George Fox University Calendar</h1>
+    
+    <!-- User enters their credentials
+     Enter the user email
+     Enter the user password -->
+    <h2>George Fox Email</h2>
+    <input type="email" placeholder="Enter email">
+
+    <h2>Password</h2>
+    <input type="password" placeholder="Enter password">
+    <input type="checkbox" id="togglePassword" />
+    <label for="togglePassword">Show Password</label>
+
+    <br><br>
+
+    <div>
+        <!-- Create account button goes to the create account page.
+         Login button redirects to home page.
+         Login will eventually be redirected after it communicates with the server. -->
+        <button onclick="window.location.href='account_create.html'">Create Account</button>
+        <button onclick="window.location.href='index.html'">Login</button>
+    </div>
+    </form>
+
+    <!-- I had ai generate the password view or hide password thing because I was lazy -->
+    <br><br>
+        <input type="checkbox" id="togglePassword" />
+        <label for="togglePassword">Show Password</label>
+
+        <br><br>
+
+        <div>
+            <!-- Note: Buttons inside a form submit by default. 
+                 type="button" prevents them from accidentally submitting the form instead of navigating. -->
+            <button type="button" onclick="window.location.href='account_create.html'">Create Account</button>
+            <button type="button" onclick="window.location.href='index.html'">Login</button>
+        </div>
+    </form>
+
+    <script>
+        const passwordInput = document.querySelector("#password");
+        const toggleCheckbox = document.querySelector("#togglePassword");
+
+        toggleCheckbox.addEventListener("change", function () {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        });
+    </script>
+    <!-- This is the end of ai generated code. -->
+
+</body>
+</html>
