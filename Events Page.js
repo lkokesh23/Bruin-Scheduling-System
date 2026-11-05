@@ -3,7 +3,8 @@
  * Events.js
  * University Scheduling System
  * Events management section
- * Used a.i. to learn javascript and help write the Events Page 25% !
+ * Used a.i. to learn javascript and help write the Events Page.  35% !
+ * Also used it to test my methods.
  */
 
 // Stores all university events
