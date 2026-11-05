@@ -31,3 +31,13 @@ function getUser(username) {
 
 //Updates the user info
 funcion updateUser(username,email,major){
+    let user = getUser(username);
+    if(user === null){
+        return "User not found.";
+    }
+    user.email = email;
+    user.major=major;
+
+    return "Account updated";
+}
+    
