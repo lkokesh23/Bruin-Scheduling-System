@@ -4,13 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bru-Sche-Sys | Add Event</title>
-</head>
-<body>
 
-    <h1>Add Event</h1>
+    <style>
+        h1
+        {
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+
+        h2
+        {
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        h3
+        {
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        h2.midtitle
+        {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        h3.subtitle
+        {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .email, .password
+        {
+        margin-bottom: 8px;
+        }
+
+        button
+        {
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+            <h3 class="subtitle">George Fox University</h3>
+            <h2 class="midtitle">Bruin Scheduling System</h2>
+            <h1>Add Event</h1>
+        </div>
     
     <h2>Event Title</h2>
     <input type="text" placeholder="Enter event title">
+
     <br><br>
 
     <form>
@@ -122,6 +170,9 @@
     <div class="add-event">
         <button onclick="window.location.href='home.html'">Add Event to Calendar</button>
     </div>
+    
+    <br><br>
+    <button onclick="window.location.href='home.html'">Take Me Home</button>
 
 </body>
 </html>
