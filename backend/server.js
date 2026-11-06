@@ -1,3 +1,8 @@
+/**
+ * @file server.js
+ * @brief Main entry point for API
+ */
+
 // server.js
 require('dotenv').config(); // 1. Load environment variables from .env file
 const express = require('express');
@@ -7,6 +12,11 @@ const cors = require('cors');
 const calendarRouter = require('./routes/viewcalendar');
 
 const app = express();
+
+/**
+ * Server listening port
+ * @type {number|string}
+ */
 const PORT = process.env.PORT || 5000;
 
 // 3. Attach global middleware
