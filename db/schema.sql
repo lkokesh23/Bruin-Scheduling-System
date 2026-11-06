@@ -1,3 +1,18 @@
+/**
+ * @file schema.sql
+ * @brief Defines tables for scheduling system database
+ * @author Isaac Montanes
+ * @date 11/5/2026
+ */
+
+/**
+ * @struct account
+ * @brief Stores basic account information
+ * @var account_id Primary key, unique to each account
+ * @var first_name User's first name
+ * @var last_name User's last name
+ * @var email the User's university email
+ */
 CREATE TABLE account (
 	account_id INT PRIMARY KEY,
 	first_name VARCHAR(50),
@@ -5,6 +20,13 @@ CREATE TABLE account (
 	email VARCHAR(100)
 );
 
+/**
+ * @struct professor
+ * @brief stores basic professor information
+ * @var account_id Primary Key, Foreign Key, links to the professor's account
+ * @var office_hours When the professor has office hours
+ * @var department The professor's department
+ */
 CREATE TABLE professor (
 	account_id INT PRIMARY KEY,
 	office_hours VARCHAR(255),
@@ -12,6 +34,13 @@ CREATE TABLE professor (
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
+/**
+ * @struct ta
+ * @brief stores basic ta information
+ * @var account_id Primary, Key, Foreign Key, links to the ta's account
+ * @var professor_id The professor the ta works for
+ * @var course_id the course the ta works in
+ */
 CREATE TABLE ta (
 	account_id INT PRIMARY KEY,
 	professor_id INT,
@@ -20,12 +49,26 @@ CREATE TABLE ta (
 	FOREIGN KEY (professor_id) REFERENCES professor(account_id)
 );
 
+/**
+ * @struct student
+ * @brief stores basic student information
+ * @var account_id Primary Key, Foreign Key, links to the student's account
+ * @var major the student's major
+ */
 CREATE TABLE student (
 	account_id INT PRIMARY KEY,
 	major VARCHAR(50),
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
+/**
+ * @struct event
+ * @brief Stores basic event information
+ * @var event_id Primary Key, the unique identifier for the event
+ * @var creator_id The account_id of the user who created the event
+ * @var time the date and time the event will be taking place
+ * @var location the location of the event
+ */
 CREATE TABLE event (
 	event_id INT PRIMARY KEY,
 	creator_id INT,
@@ -35,6 +78,14 @@ CREATE TABLE event (
 	FOREIGN KEY (creator_id) REFERENCES account(account_id)
 );
 
+/**
+ * @struct calendar
+ * @brief Junction table connecting account to event
+ * @var owner_id Foreign Key, references the account
+ * @var event_id Foreign Key, references the event
+ * @var status RSVP status
+ * @var (owner_id, event_id) Joint Primary Key, identifies the unique account-event relation being stored
+ */
 CREATE TABLE calendar (
 	owner_id INT,
 	event_id INT,
