@@ -4,6 +4,8 @@
  * University Scheduling System
  * Events management section
  * I used about 25% ai, to learn javascript and organize what I need to get done, along with ideas for the code.
+ * Used a.i. to learn javascript and help write the Events Page.  35% !
+ * Also used it to test my methods.
  */
 
 // Stores all university events
@@ -27,7 +29,7 @@ let events = [
 // Creates a new event
 function createEvent(title, description, date, startTime,
                      endTime, location, organizer,
-                     maxAttendees, category) {
+                     maxAttendees, category, continous) {
 
     let newEvent = {
         id: Date.now(),
@@ -40,12 +42,24 @@ function createEvent(title, description, date, startTime,
         organizer: organizer,
         attendees: [organizer],
         maxAttendees: maxAttendees,
-        category: category
+        category: category,
+        continous: continous,
     };
 
     events.push(newEvent);
 
     return newEvent;
+}
+
+//allows for someone to make the event continous.
+function continueEvent(id, continous)
+{
+    if(continous)
+    {
+
+        Date.now()
+    }
+
 }
 
 
