@@ -3,6 +3,7 @@
  * Events.js
  * University Scheduling System
  * Events management section
+ * I used about 25% ai, to learn javascript and organize what I need to get done, along with ideas for the code.
  * Used a.i. to learn javascript and help write the Events Page.  35% !
  * Also used it to test my methods.
  */
@@ -16,9 +17,9 @@ let events = [
         date: "2026-11-05",
         startTime: "15:00",
         endTime: "16:30",
-        location: "Library Room 204",
+        location: "Library Room 201",
         organizer: "Kaeden",
-        attendees: ["Kaeden", "Alex", "Jordan"],
+        attendees: ["Kaeden", "bob"],
         maxAttendees: 10,
         category: "Study Group"
     },
@@ -214,6 +215,7 @@ function getEventsByDate(date) {
 
 
 // Checks if two events overlap
+//gives a message if this happens.
 function eventsOverlap(event1, event2) {
 
     if (event1.date !== event2.date) {
