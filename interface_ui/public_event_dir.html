@@ -39,6 +39,29 @@
         <h1>Public Events Directory</h1>
     </div>
 
+    <form>
+        <label for="category">Event Category: </label>
+        <select id="category" name="category">
+            <option value="" disabled selected hidden>Select category</option>
+            <option value="club">Club</option>
+            <option value="study-group">Study Group</option>
+            <option value="help-session">Help Session</option>
+            <option value="office-hours">Office Hours</option>
+            <option value="sport-practice">Sports Practice</option>
+            <option value="sport-event">Sporting Event</option>
+            <option value="event-activity">Event/Activity</option>
+            <option value="misc">Miscellaneous/Other</option>
+        </select>
+
+        <span>| Extra Info/Details: </span>
+
+        <!-- Type in other info like class codes or something -->
+        <input type="details" id="extra-info" placeholder="Enter info here" required>
+    </form>
+
+    <br><br>
+    Add Public Event to Personal Calendar: <button>Add Event</button>
+
     <br><br>
     <button onclick="window.location.href='home.html'">Take Me Home</button>
 
