@@ -54,3 +54,50 @@ function changePassword(username, oldPassword, newPassword){
     }
     user.password=newPassword;
     return "Password is now changd.";
+}
+
+//delete the account
+function deleteAccount(username){
+    let index = users.findIndex(
+        user => user.username === username
+        );
+    if(index === -1){
+        return "The user hasn't been found.";
+    }
+    users.splice(index,1);
+
+    return "Account deleted.";
+}
+
+//retunrs the users
+function getAllUsers(){
+    return users;
+}
+
+//adds an event
+function addUserEvent(username, eventId){
+    let user = getUser(username);
+    if(user === null){
+        return "User not found.";
+    }
+    if(user.events.include(eventId)){
+        return "The even has already been added.";
+    }
+    user.events.push(eventId);
+
+    return "Events added to the schedule.";
+}
+
+//removes an event
+function removeUserEvent(username eventId){
+let user = getUser(username);
+    if(user ===null){
+        return "User not found.";
+    }
+    let index = user.events.indexOf(eventId);
+    if(index === -1){
+        return "Event isn't found";
+    }
+    user.events.splice(index,1);
+    return "Event removed from schedule.";
+}
