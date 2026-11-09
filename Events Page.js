@@ -3,7 +3,7 @@
  * Events.js
  * University Scheduling System
  * Events management section
- * I used about 25% ai, to learn javascript and organize what I need to get done, along with ideas for the code.
+ * I used about 35% ai, to learn javascript and organize what I need to get done, along with ideas for the code.
  * Used a.i. to learn javascript and help write the Events Page.  35% !
  * Also used it to test my methods.
  */
@@ -51,7 +51,13 @@ function createEvent(title, description, date, startTime,
     return newEvent;
 }
 
-//allows for someone to make the event continous.
+// Returns all events
+function getAllEvents() {
+    return events;
+}
+
+//currently working on a event that can be made for more then
+//one week.
 function continueEvent(id, continous)
 {
     if(continous)
@@ -60,12 +66,6 @@ function continueEvent(id, continous)
         Date.now()
     }
 
-}
-
-
-// Returns all events
-function getAllEvents() {
-    return events;
 }
 
 
