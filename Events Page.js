@@ -4,11 +4,10 @@
  * University Scheduling System
  * Events management section
  * I used about 35% ai, to learn javascript and organize what I need to get done, along with ideas for the code.
- * Used a.i. to learn javascript and help write the Events Page.  35% !
  * Also used it to test my methods.
  */
 
-// Stores all university events
+// makes a makeshift event.
 let events = [
     {
         id: 1,
@@ -82,7 +81,7 @@ function getEventById(id) {
 }
 
 
-// Searches events by title
+// Searches for events by the text title
 function searchEvents(searchText) {
 
     let results = [];
@@ -139,7 +138,7 @@ function joinEvent(eventId, studentName) {
 }
 
 
-// Removes a student from an event
+// removes a student from an event they already joined
 function leaveEvent(eventId, studentName) {
 
     let event = getEventById(eventId);
@@ -171,7 +170,7 @@ function deleteEvent(eventId, currentUser) {
         return "Event not found.";
     }
 
-    // Only the organizer can delete the event
+    // cant delete the event if not the creator
     if (events[index].organizer !== currentUser) {
         return "You cannot delete someone else's event.";
     }
@@ -182,7 +181,7 @@ function deleteEvent(eventId, currentUser) {
 }
 
 
-// Returns events a student is attending
+// shows all the students events
 function getMyEvents(studentName) {
 
     let results = [];
@@ -198,7 +197,7 @@ function getMyEvents(studentName) {
 }
 
 
-// Returns events happening on a specific date
+// puts evens by date
 function getEventsByDate(date) {
 
     let results = [];
@@ -215,7 +214,7 @@ function getEventsByDate(date) {
 
 
 // Checks if two events overlap
-//gives a message if this happens.
+//if they do notifies the user
 function eventsOverlap(event1, event2) {
 
     if (event1.date !== event2.date) {
