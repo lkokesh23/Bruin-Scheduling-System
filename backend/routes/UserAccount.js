@@ -1,3 +1,7 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../db');
+
 let users = [];
 
 
@@ -14,6 +18,33 @@ function createAccount(username, email, password, major) {
     };
 
     users.push(newUser);
+	
+	router.post('/', async(req, res) => {
+		const {username, email} = req.body;
+		
+		if (!username || !email) {
+			return res.status(400).json({error: 'Username and email are required.'});
+		}
+		
+		try {
+			const query = `
+				INSERT INTO users (id, first_name, email)
+				VALUES ($1, $2) RETURNING *
+			`;
+			
+			const values = [id, username, email];
+			
+			const {rows} = await db.query(query, values);
+			
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error inserting user:', err.stack);
+			
+			res status(500).json({ error: 'Internal Server Error' });
+		}
+	});
+	
+	module.exports = router;
 
     return newUser;
 }
