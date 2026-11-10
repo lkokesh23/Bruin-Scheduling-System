@@ -20,17 +20,17 @@ CREATE TABLE professor (
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
-CREATE TABLE ta (
-	account_id INT PRIMARY KEY,
-	professor_id INT,
-	course_id INT,
-	FOREIGN KEY (account_id) REFERENCES account(account_id),
-	FOREIGN KEY (professor_id) REFERENCES professor(account_id)
-);
+-- CREATE TABLE ta (
+-- 	account_id INT PRIMARY KEY,
+-- 	professor_id INT,
+-- 	course_id INT,
+-- 	FOREIGN KEY (account_id) REFERENCES account(account_id),
+-- 	FOREIGN KEY (professor_id) REFERENCES professor(account_id)
+-- );
 
 CREATE TABLE student (
 	account_id INT PRIMARY KEY,
-	major VARCHAR(50),
+	-- major VARCHAR(50),
 	FOREIGN KEY (account_id) REFERENCES account(account_id)
 );
 
