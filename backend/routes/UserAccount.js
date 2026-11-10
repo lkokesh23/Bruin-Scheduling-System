@@ -104,7 +104,7 @@ function changePassword(username, oldPassword, newPassword){
 }
 
 //delete the account
-function deleteAccount(username){
+function deleteAccount(userId){
     let index = users.findIndex(
         user => user.username === username
         );
@@ -112,6 +112,24 @@ function deleteAccount(username){
         return "The user hasn't been found.";
     }
     users.splice(index,1);
+	
+	router.delete('/users/:id', async (req, res) => {
+		try {
+			const query = `
+				DELETE FROM account
+				WHERE account_id = $1;
+			`;
+			const values = [userId];
+			
+			const {rows} = await db.query(query, values);
+			
+			res.status(201).json(rows[0]);
+		} catch (err){
+			console.error('Error deleting user:', err.stack);
+			
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return "Account deleted.";
 }
