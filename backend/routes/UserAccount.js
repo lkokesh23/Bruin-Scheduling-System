@@ -28,8 +28,8 @@ function createAccount(username, email, password, major) {
 		
 		try {
 			const query = `
-				INSERT INTO users (id, first_name, email)
-				VALUES ($1, $2) RETURNING *
+				INSERT INTO account (account_id, last_name, email)
+				VALUES ($1, $2) RETURNING *;
 			`;
 			
 			const values = [id, username, email];
@@ -43,8 +43,6 @@ function createAccount(username, email, password, major) {
 			res status(500).json({ error: 'Internal Server Error' });
 		}
 	});
-	
-	module.exports = router;
 
     return newUser;
 }
@@ -61,13 +59,31 @@ function getUser(username) {
 }
 
 //Updates the user info
-funcion updateUser(username,email,major){
+funcion updateUser(userId,email,major){
     let user = getUser(username);
     if(user === null){
         return "User not found.";
     }
     user.email = email;
     user.major=major;
+	
+	router.patch('/users/:id', async (req, res) => {
+		try {
+			const query = `
+				UPDATE account
+				SET email = $1,
+				WHERE account_id = userId;
+			`;
+			
+			const values = [email];
+			const {rows} = await db.query(query, values);
+			
+			res.status(201).json(rows[0]);
+		} catch (err){
+			console.error('Error updating user:', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return "The accound has been correctly updated";
 }
@@ -132,3 +148,5 @@ let user = getUser(username);
     user.events.splice(index,1);
     return "Event removed from schedule.";
 }
+
+module.exports = router;
