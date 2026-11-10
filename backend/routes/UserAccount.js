@@ -149,6 +149,27 @@ function addUserEvent(username, eventId){
         return "The even has already been added.";
     }
     user.events.push(eventId);
+	
+	router.post('/users/:id', async (req, res) => {
+		const {accountId, eventId} = req.body;
+		if (!accountId || !eventId)
+		{
+			return res.status(400).json({error: 'Account id and event id are required.'});
+		}
+		try {
+			const query = `
+				INSERT INTO calendar (owner_id, event_id)
+				VALUES ($1, $2);
+			`;
+			const values = [accountId, eventId];
+			
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error adding event:', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return "Events added to the schedule.";
 }
@@ -164,6 +185,28 @@ let user = getUser(username);
         return "Event isn't found";
     }
     user.events.splice(index,1);
+	
+	router.delete('/users/:id', async (req, res) => {
+		const {accountId, eventId} = req.body;
+		if (!accountId || !eventId)
+		{
+			return res.status(400).json({error: 'Account id and event id are required.'});
+		}
+		try {
+			const query = `
+				DELETE FROM calendar
+				WHERE owner_id = $1 AND event_id = $2;
+			`;
+			const values = [accountId, eventId];
+			
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error deleting event:', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+	
     return "Event removed from schedule.";
 }
 
