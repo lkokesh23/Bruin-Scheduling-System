@@ -1,0 +1,12 @@
+[33m38d9b53[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32minterface-ui[m[33m)[m HEAD@{0}: reset: moving to 38d9b530a218d1b18d2711b0783d269ca61c1548
+[33mee8fb0f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{1}: reset: moving to ee8fb0f9d881408b9cadadf0f555cdbca4e70817
+[33mee8fb0f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{2}: reset: moving to HEAD
+[33mee8fb0f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{3}: checkout: moving from interface-ui to interface-ui
+[33mee8fb0f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{4}: checkout: moving from main to interface-ui
+[33mee8fb0f[m[33m ([m[1;32mmain[m[33m)[m HEAD@{5}: commit: Since we changed it to have the 'Home' page show
+[33m2f67318[m HEAD@{6}: commit: 'Forgot Password' page not implemented yet because
+[33m426ad15[m HEAD@{7}: commit: Home page only has 'add event' and
+[33m675a27f[m HEAD@{8}: commit: Made sure the 'email' and 'password' fields work.
+[33m27a8e29[m HEAD@{9}: commit: The page asks for the user to input their email.
+[33m38d9b53[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32minterface-ui[m[33m)[m HEAD@{10}: commit: The home page for the Bruin Scheduling System.
+[33mb4201a3[m HEAD@{11}: clone: from https://github.com/lkokesh23/Bruin-Scheduling-System.git
