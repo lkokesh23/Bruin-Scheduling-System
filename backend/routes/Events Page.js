@@ -1,4 +1,6 @@
-
+const express = require('express');
+const router = express.Router();
+const db = require('../db');
 /*
  * Events.js
  * University Scheduling System
@@ -44,6 +46,22 @@ function createEvent(title, description, date, startTime,
         category: category,
         continous: continous,
     };
+	
+	router.post('/', async (req, res) => {
+		try {
+			const query = `
+				INSERT INTO event (title, description, time, location, creator_id)
+				VALUES ($1, $2, $3::DATE + $4::TIME, $5, $6);
+			;`;
+			const values = [title, description, date, startTime, location, organizer];
+			
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error creating event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     events.push(newEvent);
 
@@ -132,6 +150,24 @@ function joinEvent(eventId, studentName) {
     if (event.attendees.length >= event.maxAttendees) {
         return "This event is full.";
     }
+	
+	router.post('/', async (req, res) => {
+		try {
+			const query = `
+				INSERT INTO calendar (owner_id, event_id)
+				SELECT account_id, $1
+				FROM account
+				WHERE last_name = $2
+			;`;
+			const values = [studentName, eventId];
+			
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error joining event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     event.attendees.push(studentName);
 
@@ -225,3 +261,5 @@ function eventsOverlap(event1, event2) {
     return event1.startTime < event2.endTime &&
            event2.startTime < event1.endTime;
 }
+
+module.exports = router;
