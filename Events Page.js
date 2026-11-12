@@ -70,10 +70,13 @@ function continueEvent(id, continous)
 
 
 // Finds an event by its ID
-function getEventById(id) {
+function getEventById(id) 
+{
 
-    for (let event of events) {
-        if (event.id === id) {
+    for (let event of events) 
+    {
+        if (event.id === id) 
+        {
             return event;
         }
     }
