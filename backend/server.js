@@ -8,7 +8,9 @@ require('dotenv').config(); // 1. Load environment variables from .env file
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetchUserEvents = require('./dbquery')
+const fetchUserEvents = require('./dbquery');
+const db = require('./db');
+const bcrypt = require('bcrypt');
 
 
 // 2. Import route modules
@@ -50,12 +52,79 @@ app.get('/login', (req, res) => {
   res.render('login.ejs')
 });
 
+app.post('/login', async(req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const result = await db.query(
+      `SELECT account_id, password_hash
+      FROM account
+      WHERE email = $1`,
+      [email]
+    );
+
+    if (result.rows.lenth === 0) {
+      return res.status(401).send('Invalid email or password.');
+    }
+
+    const account = result.rows[0];
+
+    const passwordMatches = await bcrypt.compare(
+      password,
+      account.password_hash
+    );
+
+    if (!passwordMatches) {
+      return res.status(401).send('Invalid email or password.');
+    }
+
+    res.redirect(`/calendar/${account.account_id}`);
+  }
+
+  catch(err) {
+    console.error(err);
+    res.status(500).send('Something went wrong logging in.');
+  }
+})
+
 app.get('/add_event', (req, res) => {
   res.render('add_event.ejs')
 });
 
 app.get('/create_account', (req, res) => {
   res.render('create_account.ejs')
+});
+
+app.post('/create_account', async(req, res) => {
+  const { firstName, lastName, email, password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    return res.status(400).send('Passwords do not match.')
+  }
+
+  try {
+    const existingAccount = await db.query(
+      `SELECT account_id FROM account WHERE email = $1`,
+      [email]
+    );
+    if (existingAccount.rows.length > 0) {
+      return res.status(400).send('That email is already registered.');
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    await db.query(
+      `INSERT INTO account (first_name, last_name, email, password_hash)
+      VALUES ($1, $2, $3, $4)`,
+      [firstName, lastName, email, passwordHash]
+    );
+
+    return res.redirect('/login');
+  }
+
+  catch (err) {
+    console.error(err);
+    res.status(500).send('Something went wrong creating your account.');
+  }
 });
 
 app.get('/public_event_dir', (req, res) => {

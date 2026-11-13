@@ -57,7 +57,7 @@
 
 <body>
 
-    <form id="loginForm">
+    <form id="loginForm" method="POST" action="/login">
         <div class="header">
             <h3 class="subtitle">George Fox University</h3>
             <h2 class="midtitle">Bruin Scheduling System</h2>
@@ -68,15 +68,25 @@
             <!-- User enters their credentials
             Enter the user email
             Enter the user password -->
-            <label for="emailInput"><h2>George Fox Email</h2></label>
-            <input type="email" id="emailInput" placeholder="Enter email" required>
+            <label for="emailInput"><h2>Enter your George Fox Email</h2></label>
+            <input 
+                type="email"
+                id="emailInput"
+                name="email"
+                placeholder="Enter email"
+                required>
         </div>
 
         <div class="password">
-            <label for="passwordInput"><h2>Password</h2></label>
-            <input type="password" id="passwordInput" placeholder="Enter password" required>
+            <label for="passwordInput"><h2>Enter password</h2></label>
+            <input 
+                type="password"
+                id="passwordInput"
+                name="password"
+                placeholder="Enter password"
+                required>
         </div>
-        
+
         <div class="show-hide-pw">
             <input type="checkbox" id="togglePassword"/>
             <label for="togglePassword">Show Password</label>
@@ -88,12 +98,12 @@
             <!-- Create account button goes to the create account page.
             Login button redirects to home page.
             Login will eventually be redirected after it communicates with the server. -->
-            <button onclick="window.location.href='/'">Login</button>
-            <button onclick="window.location.href='/create_account'">Create Account</button>
+            <button type="submit">Login</button>
+            <button type="button" onclick="window.location.href='/create_account'">Create Account</button>
         </div>
 
         <div class="forgot-pw">
-            <button onclick="window.location.href='forgot_password.ejs'">Forgot Password?</button>
+            <button onclick="window.location.href='/forgot_password'">Forgot Password?</button>
         </div>
     </form>
 
@@ -101,20 +111,11 @@
     <script>
         const passwordInput = document.querySelector("#passwordInput");
         const toggleCheckbox = document.querySelector("#togglePassword");
-        const loginForm = document.querySelector("#loginForm")
 
         toggleCheckbox.addEventListener("change", function () {
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
+            passwordInput.type = toggleCheckbox.checked ? "text" : "password";
         });
-
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            window.location.href = "'/'";
-        })
+        
     </script>
     <!-- end of ai generated content -->
 
