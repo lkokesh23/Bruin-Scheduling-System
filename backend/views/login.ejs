@@ -3,26 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GFU Calendar | Login</title>
+    <title>Bru-Sche-Sys | Login</title>
     <style>
         h1
         {
-            margin-top: 0;
+            margin-top: 16px;
+            margin-bottom: 16px;
         }
 
         h2
         {
-            margin-bottom: 8px;
+            margin-top: 16px;
+            margin-bottom: 4px;
         }
 
-        h3
+        h2.midtitle
         {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        h3.subtitle
+        {
+            margin-top: 0;
             margin-bottom: 0;
         }
 
-        .email, .password
+        button
         {
-        margin-bottom: 8px;
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+
+        input[type="email"]
+        {
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        input[type="password"]
+        {
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        input[type="checkbox"]
+        {
+            margin-top: 4px;
+            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -32,7 +60,8 @@
     <form id="loginForm">
         <div class="header">
             <h3 class="subtitle">George Fox University</h3>
-            <h1>Bruin Scheduling System</h1>
+            <h2 class="midtitle">Bruin Scheduling System</h2>
+            <h1>Login</h1>
         </div>
         
         <div class="email">
@@ -55,12 +84,16 @@
 
         <br><br>
 
-        <div>
-        <!-- Create account button goes to the create account page.
-         Login button redirects to home page.
-         Login will eventually be redirected after it communicates with the server. -->
-        <button onclick="window.location.href='account_create.html'">Create Account</button>
-        <button onclick="window.location.href='index.html'">Login</button>
+        <div class="buttons">
+            <!-- Create account button goes to the create account page.
+            Login button redirects to home page.
+            Login will eventually be redirected after it communicates with the server. -->
+            <button onclick="window.location.href='/'">Login</button>
+            <button onclick="window.location.href='/create_account'">Create Account</button>
+        </div>
+
+        <div class="forgot-pw">
+            <button onclick="window.location.href='forgot_password.ejs'">Forgot Password?</button>
         </div>
     </form>
 
@@ -80,7 +113,7 @@
 
         loginForm.addEventListener("submit", function (e) {
             e.preventDefault();
-            window.location.href = 'index.html';
+            window.location.href = "'/'";
         })
     </script>
     <!-- end of ai generated content -->

@@ -63,24 +63,55 @@
 
 <body>
 
-    <form id="loginForm">
-        <div class="header">
+    <div class="header">
             <h3 class="subtitle">George Fox University</h3>
             <h2 class="midtitle">Bruin Scheduling System</h2>
             <h1>Create Account</h1>
         </div>
         
+    <form id="accCreateForm" method="POST" action="/create_account">
+        
+        <div class="firstName">
+            <label for="firstNameInput"><h2>Enter your first name</h2></label>
+            <input 
+                type="text"
+                id="firstNameInput"
+                name="firstName"
+                placeholder="Enter first name"
+                required>
+        </div>
+
+        <div class="lastName">
+            <label for="lastNameInput"><h2>Enter your last name</h2></label>
+            <input 
+                type="text"
+                id="lastNameInput"
+                name="lastName"
+                placeholder="Enter last name"
+                required>
+        </div>
+
         <div class="email">
             <!-- User enters their credentials
             Enter the user email
             Enter the user password -->
             <label for="emailInput"><h2>Enter your George Fox Email</h2></label>
-            <input type="email" id="emailInput" placeholder="Enter email" required>
+            <input 
+                type="email"
+                id="emailInput"
+                name="email"
+                placeholder="Enter email"
+                required>
         </div>
 
         <div class="password">
             <label for="passwordInput"><h2>Create a password</h2></label>
-            <input type="password" id="passwordInput" placeholder="Enter password" required>
+            <input 
+                type="password"
+                id="passwordInput"
+                name="password"
+                placeholder="Enter password"
+                required>
         </div>
 
         <div class="show-hide-pw">
@@ -90,7 +121,12 @@
 
         <div class="password">
             <label for="passwordInput2"><h2>Type your password again</h2></label>
-            <input type="password" id="passwordInput2" placeholder="In case you spelled it wrong" required>
+            <input
+                type="password"
+                id="passwordInput2"
+                name="confirmPassword"
+                placeholder="In case you spelled it wrong"
+                required>
         </div>
         
         <div class="show-hide-pw2">
@@ -104,18 +140,19 @@
             <!-- Create account button goes to the create account page.
             Login button redirects to home page.
             Login will eventually be redirected after it communicates with the server. -->
-            <button onclick="window.location.href='login.html'">Login</button>
+            <button type="button" onclick="window.location.href='/login'">Login</button>
+            <button type="submit">Create Account</button>
         </div>
 
         <div class="forgot-pw">
-            <button onclick="window.location.href='forgot_password.html'">Forgot Password?</button>
+            <button type="button" onclick="window.location.href='/forgot_password'">Forgot Password?</button>
         </div>
     </form>
 
     <!-- I had ai generate the view/hide password thing because I was lazy -->
     <script>
         // the form
-        const loginForm = document.querySelector("#loginForm")
+        const accCreateForm = document.querySelector("#accCreateForm")
 
         // password field 1
         const passwordInput = document.querySelector("#passwordInput");
@@ -143,10 +180,6 @@
             }
         });
 
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            window.location.href = 'home.html';
-        });
     </script>
 
 </body>

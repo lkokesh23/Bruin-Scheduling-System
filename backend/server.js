@@ -34,18 +34,36 @@ app.use(express.static(
 const PORT = process.env.PORT || 5000;
 
 // 3. Attach global middleware
-app.use(cors());          // Allows React frontend to send requests to this server
-app.use(express.json());  // Parses incoming JSON request bodies
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 // 4. Register API route handlers
 app.use('/api/calendar', calendarRouter);
 
 let counter = 1
 
-// Basic health check route
 app.get('/', (req, res) => {
-  counter++
-  res.render('index', {counter})
+  res.render('home.ejs')
+});
+
+app.get('/login', (req, res) => {
+  res.render('login.ejs')
+});
+
+app.get('/add_event', (req, res) => {
+  res.render('add_event.ejs')
+});
+
+app.get('/create_account', (req, res) => {
+  res.render('create_account.ejs')
+});
+
+app.get('/public_event_dir', (req, res) => {
+  res.render('public_event_dir.ejs')
+});
+
+app.get('/forgot_password', (req, res) => {
+  res.render('forgot_password.ejs')
 });
 
 app.get('/calendar/:userId', async (req, res) => {
@@ -62,6 +80,9 @@ app.get('/calendar/:userId', async (req, res) => {
   }
 })
 
+app.get('/test', (req, res) => {
+  res.send('You are running the updated server.js!');
+});
 
 // 5. Start listening for network requests
 app.listen(PORT, () => {
