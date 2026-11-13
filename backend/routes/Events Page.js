@@ -191,6 +191,25 @@ function leaveEvent(eventId, studentName) {
     }
 
     event.attendees.splice(index, 1);
+	
+	router.delete('/', async (req, res) => {
+		try {
+			const query = `
+				DELETE FROM calendar
+				WHERE event_id  = $1
+				AND owner_id = (
+					SELECT account_id
+					FROM account
+					WHERE last_name = $2
+			;`;
+			const values = [eventId, studentName];
+			const {rows} = db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error leaving event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return "Successfully left the event.";
 }
@@ -213,6 +232,21 @@ function deleteEvent(eventId, currentUser) {
     }
 
     events.splice(index, 1);
+	
+	router.delete ('/', async (req, res) => {
+		try {
+			const query = `
+				DELETE FROM calendar 
+				WHERE event_id = $1
+			;`;
+			const values = [eventId];
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err){
+			console.error('Error deleting event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return "Event successfully deleted.";
 }
