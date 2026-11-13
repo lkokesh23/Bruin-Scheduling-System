@@ -237,6 +237,8 @@ function deleteEvent(eventId, currentUser) {
 		try {
 			const query = `
 				DELETE FROM calendar 
+				WHERE event_id = $1;
+				DELETE FROM event
 				WHERE event_id = $1
 			;`;
 			const values = [eventId];
