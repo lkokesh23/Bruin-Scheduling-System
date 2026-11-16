@@ -1,7 +1,7 @@
 let users = [];
 
 
-// Creates a new user account
+// Creates a model new user account
 function createAccount(username, email, password, major) {
 
     let newUser = {
