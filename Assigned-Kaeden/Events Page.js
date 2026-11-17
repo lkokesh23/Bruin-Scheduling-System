@@ -223,6 +223,8 @@ function eventsOverlap(event1, event2) {
 
     if (event1.date !== event2.date) {
         return false;
+    }else{
+        return true;
     }
 
     return event1.startTime < event2.endTime &&
