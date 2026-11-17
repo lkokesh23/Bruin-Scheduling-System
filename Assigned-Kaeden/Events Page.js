@@ -63,7 +63,7 @@ function continueEvent(id, continous)
     {
 
         Date.now();
-        event.id ();//will finish tonight
+        event.id();//will finish tonight
     }
 
 }
