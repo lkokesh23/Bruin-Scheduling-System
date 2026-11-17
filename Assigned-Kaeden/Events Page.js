@@ -18,7 +18,7 @@ let events = [
         endTime: "16:30",
         location: "Library Room 201",
         organizer: "Kaeden",
-        attendees: ["Kaeden", "bob", "jeremy],
+        attendees: ["Kaeden", "bob", "jeremy"],
         maxAttendees: 12,
         category: "Study Group"
     },
