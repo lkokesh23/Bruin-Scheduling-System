@@ -92,9 +92,25 @@ function getEventById(id) {
 
     for (let event of events) {
         if (event.id === id) {
-            return event;
+            //return event;
         }
     }
+	
+	router.get('/', async (req, res) => {
+		try {
+			const query = `
+				SELECT * FROM event
+				WHERE event_id = $1
+			;`;
+			const values = [id];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows[0]);
+		} catch (err) {
+			console.error('Error getting event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return null;
 }
@@ -265,6 +281,23 @@ function getMyEvents(studentName) {
             results.push(event);
         }
     }
+	
+	router.get('/', async (req, res) => {
+		try {
+			const {id} = req.params;
+			const query = `
+				SELECT * FROM calendar
+				WHERE owner_id = $1
+			;`;
+			const values = [id];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows);
+		} catch (err) {
+			console.error('Error getting events', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return results;
 }
@@ -281,6 +314,23 @@ function getEventsByDate(date) {
             results.push(event);
         }
     }
+	
+	router.get('/', async (req, res) => {
+		try {
+			const {startTime, endTime} = req.params;
+			const query = `
+				SELECT * FROM calendar
+				WHERE time > $1 AND time < $2
+			;`;
+			const values = [startTime, endTime];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows);
+		} catch (err) {
+			console.error('Error getting events', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
 
     return results;
 }

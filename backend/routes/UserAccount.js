@@ -52,9 +52,25 @@ function createAccount(username, email, password, major) {
 function getUser(username) {
     for(let user of users) {
         if(user.username === username){
-            return user;
+            //return user;
         }
     }
+	router.get('/', async (req, res) => {
+		try {
+			const {id} = req.params;
+			const query = `
+				SELECT * FROM account
+				WHERE account_id = $1
+			;`;
+			const values = [id];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows[0]);
+		} catch (err) {
+			console.error('Error getting user', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
     return null;
 }
 
@@ -136,6 +152,19 @@ function deleteAccount(userId){
 
 //retunrs the users
 function getAllUsers(){
+	router.get('/', async (req, res) => {
+		try {
+			const query = `
+				SELECT * FROM account
+			;`;
+			
+			const {rows} = await db.query(query);
+			res.status(200).json(rows);
+		} catch (err) {
+			console.error('Error getting users', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
     return users;
 }
 
