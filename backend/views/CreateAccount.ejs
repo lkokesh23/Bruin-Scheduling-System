@@ -69,7 +69,7 @@
             <h1>Create Account</h1>
         </div>
         
-    <form id="accCreateForm" method="POST" action="/create_account">
+    <form id="accCreateForm" method="POST" action="/create-account">
         
         <div class="firstName">
             <label for="firstNameInput"><h2>Enter your first name</h2></label>
@@ -140,12 +140,12 @@
             <!-- Create account button goes to the create account page.
             Login button redirects to home page.
             Login will eventually be redirected after it communicates with the server. -->
-            <button type="button" onclick="window.location.href='/login'">Login</button>
+            <!-- <button><a href="/login">Login</a></button> -->
             <button type="submit">Create Account</button>
         </div>
 
         <div class="forgot-pw">
-            <button type="button" onclick="window.location.href='/forgot_password'">Forgot Password?</button>
+            <button type="button" onclick="window.location.href='/ForgotPassword'">Forgot Password?</button>
         </div>
     </form>
 

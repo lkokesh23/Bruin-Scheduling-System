@@ -1,9 +1,9 @@
 /**
- * @file routes/viewcalendar.js
+ * @file routes/ViewCalendar.js
  * @brief Express router for fetching and formatting calendar event data
  * @details Queries the database for events relates to a certain user, and puts the result in a usable format
 
- * @module routes/viewcalendar
+ * @module routes/ViewCalendar
  */
 
 //routes/viewcalendar.js

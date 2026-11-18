@@ -1,5 +1,5 @@
 /**
- * @file server.js
+ * @file Server.js
  * @brief Main entry point for API
  */
 
@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt');
 
 
 // 2. Import route modules
-const calendarRouter = require('./routes/viewcalendar');
+const calendarRouter = require('./routes/ViewCalendar');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -44,12 +44,8 @@ app.use('/api/calendar', calendarRouter);
 
 let counter = 1
 
-app.get('/', (req, res) => {
-  res.render('home.ejs')
-});
-
 app.get('/login', (req, res) => {
-  res.render('login.ejs')
+  res.render('Login.ejs')
 });
 
 app.post('/login', async(req, res) => {
@@ -87,15 +83,15 @@ app.post('/login', async(req, res) => {
   }
 })
 
-app.get('/add_event', (req, res) => {
-  res.render('add_event.ejs')
+app.get('/add-event', (req, res) => {
+  res.render('AddEvent.ejs')
 });
 
-app.get('/create_account', (req, res) => {
-  res.render('create_account.ejs')
+app.get('/create-account', (req, res) => {
+  res.render('CreateAccount.ejs')
 });
 
-app.post('/create_account', async(req, res) => {
+app.post('/create-account', async(req, res) => {
   const { firstName, lastName, email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
@@ -127,12 +123,12 @@ app.post('/create_account', async(req, res) => {
   }
 });
 
-app.get('/public_event_dir', (req, res) => {
-  res.render('public_event_dir.ejs')
+app.get('/public-events', (req, res) => {
+  res.render('PublicEventsDirectory.ejs')
 });
 
-app.get('/forgot_password', (req, res) => {
-  res.render('forgot_password.ejs')
+app.get('/forgot-password', (req, res) => {
+  res.render('ForgotPassword.ejs')
 });
 
 app.get('/calendar/:userId', async (req, res) => {
@@ -145,12 +141,12 @@ app.get('/calendar/:userId', async (req, res) => {
     res.render('userevents', {userEvents})
   } catch (err) {
     console.error(err)
-    res.status(500).send("Oh Noes")
+    res.status(500).send("Something went wrong but I'm not sure what it is.")
   }
 })
 
-app.get('/test', (req, res) => {
-  res.send('You are running the updated server.js!');
+app.get('/', (req, res) => {
+  res.render('Home.ejs')
 });
 
 // 5. Start listening for network requests
