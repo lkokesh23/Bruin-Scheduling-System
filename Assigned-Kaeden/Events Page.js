@@ -18,7 +18,7 @@ let events = [
         endTime: "16:30",
         location: "Library Room 201",
         organizer: "Kaeden",
-        attendees: ["Kaeden", "bob", "jeremy],
+        attendees: ["Kaeden", "bob", "jeremy"],
         maxAttendees: 12,
         category: "Study Group"
     },
@@ -57,14 +57,33 @@ function getAllEvents() {
 
 //currently working on a event that can be made for more then
 //one week.
-function continueEvent(id, continous)
+function continueEvent(id, weeks)
 {
-    if(continous)
+    let originalEvent = getEventById(id);
+    if(originalEvent=== null)
     {
-
-        Date.now();
-        event.id ();//will finish tonight
+        return "Event not found";
     }
+    let createdEvents=[];
+    let baseDate = new Date(originalEvent.date + "T00:00:00");
+    for(let i=1;i<weeks;i++)
+    {
+        let nextDate=new Date(baseDate);
+        nextDate.setDate(baseDate.getDate() + (i*7));
+        let formattedDate = nextDate.toISOString().split('T')[0];
+        let recurringEvent = {
+            ...originalEvent,
+            id:Date.now()+i,
+            date: formattedDate,
+            attendees: [originalEvent.organizer]
+        }
+        events.push(recurringEvent);
+        createdEvents.push(recurringEvent);
+            
+
+    }
+    return createdEvents;
+    
 
 }
 
