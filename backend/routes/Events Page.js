@@ -70,6 +70,19 @@ function createEvent(title, description, date, startTime,
 
 // Returns all events
 function getAllEvents() {
+	router.get('/', async (req, res) => {
+		try {
+			const query = `
+				SELECT * FROM EVENTS
+			;`;
+			
+			const {rows} = await db.query(query);
+			res.status(201).json(rows);
+		} catch (err) {
+			console.error('Error creating event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
     return events;
 }
 
@@ -77,13 +90,30 @@ function getAllEvents() {
 //one week.
 function continueEvent(id, continous)
 {
-    if(continous)
+    let originalEvent = getEventById(id);
+    if(originalEvent=== null)
     {
-
-        Date.now();
-        event.id ();//will finish tonight
+        return "Event not found";
     }
+    let createdEvents=[];
+    let baseDate = new Date(originalEvent.date + "T00:00:00");
+    for(let i=1;i<weeks;i++)
+    {
+        let nextDate=new Date(baseDate);
+        nextDate.setDate(baseDate.getDate() + (i*7));
+        let formattedDate = nextDate.toISOString().split('T')[0];
+        let recurringEvent = {
+            ...originalEvent,
+            id:Date.now()+i,
+            date: formattedDate,
+            attendees: [originalEvent.organizer]
+        }
+        events.push(recurringEvent);
+        createdEvents.push(recurringEvent);
+            
 
+    }
+    return createdEvents;
 }
 
 
