@@ -8,13 +8,13 @@ require('dotenv').config(); // 1. Load environment variables from .env file
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetchUserEvents = require('./dbquery');
+const fetchUserEvents = require('../dbquery');
 const db = require('./db');
 const bcrypt = require('bcrypt');
 
 
 // 2. Import route modules
-const calendarRouter = require('./routes/ViewCalendar');
+const calendarRouter = require('./backend/routes/view-calendar');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -45,7 +45,7 @@ app.use('/api/calendar', calendarRouter);
 let counter = 1
 
 app.get('/login', (req, res) => {
-  res.render('Login.ejs')
+  res.render('login.ejs')
 });
 
 app.post('/login', async(req, res) => {
@@ -84,11 +84,11 @@ app.post('/login', async(req, res) => {
 })
 
 app.get('/add-event', (req, res) => {
-  res.render('AddEvent.ejs')
+  res.render('add_event.ejs')
 });
 
 app.get('/create-account', (req, res) => {
-  res.render('CreateAccount.ejs')
+  res.render('create_account.ejs')
 });
 
 app.post('/create-account', async(req, res) => {
@@ -124,11 +124,11 @@ app.post('/create-account', async(req, res) => {
 });
 
 app.get('/public-events', (req, res) => {
-  res.render('PublicEventsDirectory.ejs')
+  res.render('public_event_dir.ejs')
 });
 
 app.get('/forgot-password', (req, res) => {
-  res.render('ForgotPassword.ejs')
+  res.render('forgot_password.ejs')
 });
 
 app.get('/calendar/:userId', async (req, res) => {
@@ -138,7 +138,7 @@ app.get('/calendar/:userId', async (req, res) => {
 
     console.log(userEvents, userId)
 
-    res.render('userevents', {userEvents})
+    res.render('userEvents', {userEvents})
   } catch (err) {
     console.error(err)
     res.status(500).send("Something went wrong but I'm not sure what it is.")
@@ -146,10 +146,10 @@ app.get('/calendar/:userId', async (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  res.render('Home.ejs')
+  res.render('home.ejs')
 });
 
-// 5. Start listening for network requests
+// Does it work?
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
