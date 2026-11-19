@@ -1,0 +1,381 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../db');
+/*
+ * Events.js
+ * University Scheduling System
+ * Events management section
+ * I used about 35% ai, to learn javascript and organize what I need to get done, along with ideas for the code.
+ * Also used it to test my methods.
+ */
+
+// makes a makeshift event.
+let events = [
+    {
+        id: 1,
+        title: "Computer Science Study Group",
+        description: "Meet up to study for our upcoming exam.",
+        date: "2026-11-05",
+        startTime: "15:00",
+        endTime: "16:30",
+        location: "Library Room 201",
+        organizer: "Kaeden",
+        attendees: ["Kaeden", "bob"],
+        maxAttendees: 10,
+        category: "Study Group"
+    },
+];
+
+
+// Creates a new event
+function createEvent(title, description, date, startTime,
+                     endTime, location, organizer,
+                     maxAttendees, category, continous) {
+
+    let newEvent = {
+        id: Date.now(),
+        title: title,
+        description: description,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        location: location,
+        organizer: organizer,
+        attendees: [organizer],
+        maxAttendees: maxAttendees,
+        category: category,
+        continous: continous,
+    };
+	
+	router.post('/', async (req, res) => {
+		try {
+			const query = `
+				INSERT INTO event (title, description, time, location, creator_id)
+				VALUES ($1, $2, $3::DATE + $4::TIME, $5, $6);
+			;`;
+			const values = [title, description, date, startTime, location, organizer];
+			
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error creating event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    events.push(newEvent);
+
+    return newEvent;
+}
+
+// Returns all events
+function getAllEvents() {
+	router.get('/', async (req, res) => {
+		try {
+			const query = `
+				SELECT * FROM EVENTS
+			;`;
+			
+			const {rows} = await db.query(query);
+			res.status(201).json(rows);
+		} catch (err) {
+			console.error('Error creating event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+    return events;
+}
+
+//currently working on a event that can be made for more then
+//one week.
+function continueEvent(id, continous)
+{
+    let originalEvent = getEventById(id);
+    if(originalEvent=== null)
+    {
+        return "Event not found";
+    }
+    let createdEvents=[];
+    let baseDate = new Date(originalEvent.date + "T00:00:00");
+    for(let i=1;i<weeks;i++)
+    {
+        let nextDate=new Date(baseDate);
+        nextDate.setDate(baseDate.getDate() + (i*7));
+        let formattedDate = nextDate.toISOString().split('T')[0];
+        let recurringEvent = {
+            ...originalEvent,
+            id:Date.now()+i,
+            date: formattedDate,
+            attendees: [originalEvent.organizer]
+        }
+        events.push(recurringEvent);
+        createdEvents.push(recurringEvent);
+            
+
+    }
+    return createdEvents;
+}
+
+
+// Finds an event by its ID
+function getEventById(id) {
+
+    for (let event of events) {
+        if (event.id === id) {
+            //return event;
+        }
+    }
+	
+	router.get('/', async (req, res) => {
+		try {
+			const query = `
+				SELECT * FROM event
+				WHERE event_id = $1
+			;`;
+			const values = [id];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows[0]);
+		} catch (err) {
+			console.error('Error getting event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    return null;
+}
+
+
+// Searches for events by the text title
+function searchEvents(searchText) {
+
+    let results = [];
+
+    for (let event of events) {
+
+        if (event.title.toLowerCase()
+            .includes(searchText.toLowerCase())) {
+
+            results.push(event);
+        }
+    }
+
+    return results;
+}
+
+
+// Filters events by category
+function filterEvents(category) {
+
+    let results = [];
+
+    for (let event of events) {
+
+        if (event.category === category) {
+            results.push(event);
+        }
+    }
+
+    return results;
+}
+
+
+// Adds a student to an event
+function joinEvent(eventId, studentName) {
+
+    let event = getEventById(eventId);
+
+    if (event === null) {
+        return "Event not found.";
+    }
+
+    if (event.attendees.includes(studentName)) {
+        return "You are already attending this event.";
+    }
+
+    if (event.attendees.length >= event.maxAttendees) {
+        return "This event is full.";
+    }
+	
+	router.post('/', async (req, res) => {
+		try {
+			const query = `
+				INSERT INTO calendar (owner_id, event_id)
+				SELECT account_id, $1
+				FROM account
+				WHERE last_name = $2
+			;`;
+			const values = [studentName, eventId];
+			
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error joining event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    event.attendees.push(studentName);
+
+    return "Successfully joined the event!";
+}
+
+
+// removes a student from an event they already joined
+function leaveEvent(eventId, studentName) {
+
+    let event = getEventById(eventId);
+
+    if (event === null) {
+        return "Event not found.";
+    }
+
+    let index = event.attendees.indexOf(studentName);
+
+    if (index === -1) {
+        return "You are not attending this event.";
+    }
+
+    event.attendees.splice(index, 1);
+	
+	router.delete('/', async (req, res) => {
+		try {
+			const query = `
+				DELETE FROM calendar
+				WHERE event_id  = $1
+				AND owner_id = (
+					SELECT account_id
+					FROM account
+					WHERE last_name = $2
+			;`;
+			const values = [eventId, studentName];
+			const {rows} = db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err) {
+			console.error('Error leaving event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    return "Successfully left the event.";
+}
+
+
+// Deletes an event
+function deleteEvent(eventId, currentUser) {
+
+    let index = events.findIndex(
+        event => event.id === eventId
+    );
+
+    if (index === -1) {
+        return "Event not found.";
+    }
+
+    // cant delete the event if not the creator
+    if (events[index].organizer !== currentUser) {
+        return "You cannot delete someone else's event.";
+    }
+
+    events.splice(index, 1);
+	
+	router.delete ('/', async (req, res) => {
+		try {
+			const query = `
+				DELETE FROM calendar 
+				WHERE event_id = $1;
+				DELETE FROM event
+				WHERE event_id = $1
+			;`;
+			const values = [eventId];
+			const {rows} = await db.query(query, values);
+			res.status(201).json(rows[0]);
+		} catch (err){
+			console.error('Error deleting event', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    return "Event successfully deleted.";
+}
+
+
+// shows all the students events
+function getMyEvents(studentName) {
+
+    let results = [];
+
+    for (let event of events) {
+
+        if (event.attendees.includes(studentName)) {
+            results.push(event);
+        }
+    }
+	
+	router.get('/', async (req, res) => {
+		try {
+			const {id} = req.params;
+			const query = `
+				SELECT * FROM calendar
+				WHERE owner_id = $1
+			;`;
+			const values = [id];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows);
+		} catch (err) {
+			console.error('Error getting events', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    return results;
+}
+
+
+// puts evens by date
+function getEventsByDate(date) {
+
+    let results = [];
+
+    for (let event of events) {
+
+        if (event.date === date) {
+            results.push(event);
+        }
+    }
+	
+	router.get('/', async (req, res) => {
+		try {
+			const {startTime, endTime} = req.params;
+			const query = `
+				SELECT * FROM calendar
+				WHERE time > $1 AND time < $2
+			;`;
+			const values = [startTime, endTime];
+			
+			const {rows} = await db.query(query, values);
+			res.status(200).json(rows);
+		} catch (err) {
+			console.error('Error getting events', err.stack);
+			res.status(500).json({error: 'Internal Server Error'});
+		}
+	});
+
+    return results;
+}
+
+
+// Checks if two events overlap
+//if they do notifies the user
+function eventsOverlap(event1, event2) {
+
+    if (event1.date !== event2.date) {
+        return false;
+    }
+
+    return event1.startTime < event2.endTime &&
+           event2.startTime < event1.endTime;
+}
+
+module.exports = router;

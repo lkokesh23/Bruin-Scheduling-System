@@ -1,7 +1,7 @@
 let users = [];
 
 
-// Creates a new user account
+// Creates a model new user account
 function createAccount(username, email, password, major) {
 
     let newUser = {
@@ -96,7 +96,7 @@ let user = getUser(username);
     }
     let index = user.events.indexOf(eventId);
     if(index === -1){
-        return "Event isn't found";
+        return "This Event isn't found, please search again";
     }
     user.events.splice(index,1);
     return "Event removed from schedule.";
