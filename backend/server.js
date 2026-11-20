@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt');
 
 
 // 2. Import route modules
-const calendarRouter = require('./backend/routes/view-calendar');
+const calendarRouter = require('./routes/view-calendar');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -138,7 +138,7 @@ app.get('/calendar/:userId', async (req, res) => {
 
     console.log(userEvents, userId)
 
-    res.render('userEvents', {userEvents})
+    res.render('userEvents', {user_events})
   } catch (err) {
     console.error(err)
     res.status(500).send("Something went wrong but I'm not sure what it is.")
