@@ -157,11 +157,7 @@ app.get('/calendar/:userId', async (req, res) => {
 
     console.log(userEvents, userId)
 
-<<<<<<< HEAD
-    res.render('userEvents', { userEvents });
-=======
     res.render('user_events', {userEvents})
->>>>>>> 69e72162ffec9505a1a4b31c4d3e7fa12e859477
   } catch (err) {
     console.error(err)
     res.status(500).send("Something went wrong but I'm not sure what it is.")
