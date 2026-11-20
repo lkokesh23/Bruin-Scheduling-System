@@ -88,16 +88,16 @@ app.get('/add-event/:account_id', (req, res) => {
 });
 
 app.post('/add-event', async (req, res) => {
-  const {creator_id, date, startTime, endTime, location, title} = req.body;
+  const {creator_id, date, startTime, endTime, location, title, description} = req.body;
   const timestamp = `${date} ${startTime}`;
   
   try {
 		const {rows} = await db.query(
-			`INSERT INTO event (creator_id, time, location, title)
-			VALUES ($1, $2, $3, $4)
+			`INSERT INTO event (creator_id, time, location, title, description)
+			VALUES ($1, $2, $3, $4, $5)
 			RETURNING *;
 			`, 
-			[creator_id, timestamp, location, title]
+			[creator_id, timestamp, location, title, description || null]
 		);
 		return res.redirect(`/${creator_id}`);
   } catch (err) {
