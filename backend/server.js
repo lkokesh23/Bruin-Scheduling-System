@@ -73,8 +73,7 @@ app.post('/login', async(req, res) => {
     if (!passwordMatches) {
       return res.status(401).send('Invalid email or password.');
     }
-
-    res.redirect(`/calendar/${account.account_id}`);
+    res.redirect(`/${account.account_id}`);
   }
 
   catch(err) {
@@ -83,8 +82,28 @@ app.post('/login', async(req, res) => {
   }
 })
 
-app.get('/add-event', (req, res) => {
-  res.render('add_event.ejs')
+app.get('/add-event/:account_id', (req, res) => {
+	const {account_id} = req.params;
+  res.render('add_event.ejs', {account_id});
+});
+
+app.post('/add-event', async (req, res) => {
+  const {creator_id, date, startTime, endTime, location, title, description} = req.body;
+  const timestamp = `${date} ${startTime}`;
+  
+  try {
+		const {rows} = await db.query(
+			`INSERT INTO event (creator_id, time, location, title, description)
+			VALUES ($1, $2, $3, $4, $5)
+			RETURNING *;
+			`, 
+			[creator_id, timestamp, location, title, description || null]
+		);
+		return res.redirect(`/${creator_id}`);
+  } catch (err) {
+	  console.error(err);
+	  res.status(500).send("Something went wrong with adding your event");
+  }
 });
 
 app.get('/create-account', (req, res) => {
@@ -138,15 +157,24 @@ app.get('/calendar/:userId', async (req, res) => {
 
     console.log(userEvents, userId)
 
+<<<<<<< HEAD
     res.render('userEvents', { userEvents });
+=======
+    res.render('user_events', {userEvents})
+>>>>>>> 69e72162ffec9505a1a4b31c4d3e7fa12e859477
   } catch (err) {
     console.error(err)
     res.status(500).send("Something went wrong but I'm not sure what it is.")
   }
-})
+});
 
 app.get('/', (req, res) => {
-  res.render('home.ejs')
+	res.redirect('/login');
+});
+
+app.get('/:account_id', (req, res) => {
+	const {account_id} = req.params;
+  res.render('home.ejs', {account_id})
 });
 
 // Does it work?
