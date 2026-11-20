@@ -4,11 +4,11 @@
  */
 
 // server.js
-require('dotenv').config(); // 1. Load environment variables from .env file
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fetchUserEvents = require('../dbquery');
+const fetchUserEvents = require('./dbquery');
 const db = require('./db');
 const bcrypt = require('bcrypt');
 
@@ -59,7 +59,7 @@ app.post('/login', async(req, res) => {
       [email]
     );
 
-    if (result.rows.lenth === 0) {
+    if (result.rows.length === 0) {
       return res.status(401).send('Invalid email or password.');
     }
 
@@ -138,7 +138,7 @@ app.get('/calendar/:userId', async (req, res) => {
 
     console.log(userEvents, userId)
 
-    res.render('userEvents', {user_events})
+    res.render('userEvents', { userEvents });
   } catch (err) {
     console.error(err)
     res.status(500).send("Something went wrong but I'm not sure what it is.")
