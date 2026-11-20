@@ -9,3 +9,5 @@ Thumbs.db
 .vscode/
 .neon
 node_modules/
+node_modules/
+node-modules/
