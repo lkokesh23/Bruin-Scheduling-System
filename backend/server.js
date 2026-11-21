@@ -89,20 +89,21 @@ app.get('/add-event/:account_id', (req, res) => {
 
 app.post('/add-event', async (req, res) => {
   const {creator_id, date, startTime, endTime, location, title, description} = req.body;
-  const timestamp = `${date} ${startTime}`;
+  const start_timestamp = `${date} ${startTime}`;
+  const end_timestamp = `${date} ${endTime}`;
   
   try {
 		const {rows} = await db.query(
 			`WITH new_event AS (
-				INSERT INTO event (creator_id, time, location, title, description)
-				VALUES ($1, $2, $3, $4, $5)
+				INSERT INTO event (creator_id, start_time, end_time, location, title, description)
+				VALUES ($1, $2, $3, $4, $5, $6)
 				RETURNING event_id, creator_id
 			)
 			INSERT INTO calendar(event_id, owner_id)
 			SELECT event_id, creator_id 
 			FROM new_event;
 			`, 
-			[creator_id, timestamp, location, title, description || null]
+			[creator_id, start_timestamp, end_timestamp,  location, title, description || null]
 		);
 		return res.redirect(`/${creator_id}`);
   } catch (err) {
@@ -175,7 +176,28 @@ app.get('/', (req, res) => {
 
 app.get('/:account_id', (req, res) => {
 	const {account_id} = req.params;
-  res.render('home.ejs', {account_id})
+	res.render('home.ejs', {account_id});
+});
+
+app.get('/api/events', async (req, res) => {
+	const {start, end} = req.query;
+	
+	try {
+		const events = await db.query(
+		  `SELECT event_id, title, start_time AS start, 
+		  COALESCE(end_time, start_time + INTERVAL '1 hour') AS "end" FROM event
+		   WHERE ($1::timestamp IS NULL OR start_time < $1::timestamp)
+		    AND ($2::timestamp IS NULL OR COALESCE(end_time, start_time + INTERVAL '1 hour') > $2::timestamp);`,
+			[end || null, start || null]
+		);
+		res.json(events.rows);
+	}
+
+	catch (err) {
+		console.error(err);
+		res.status(500).send('Something went wrong making your calendar.');
+	}
+	
 });
 
 // Does it work?

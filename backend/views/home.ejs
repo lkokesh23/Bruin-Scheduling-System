@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bru-Sche-Sys | Home</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@event-calendar/build/dist/event-calendar.min.css" />
+	  <style>
+		body { font-family: system-ui, sans-serif; padding: 20px; }
+		#ec { max-width: 1100px; margin: 0 auto; }
 
-    <style>
         h1
         {
             margin-top: 16px;
@@ -57,7 +60,38 @@
 
     <!-- Insert the calendar with all your stuff displayed here. -->
     
+	<div id="ec"></div>
 
+  <!-- EventCalendar UMD Bundle (includes all views + Interaction plugin) -->
+  <script src="https://cdn.jsdelivr.net/npm/@event-calendar/build/dist/event-calendar.min.js"></script>
+
+  <script>
+	// Safely inject EJS server variables into client JS
+	const currentAccountId = <%- JSON.stringify(account_id) %>;
+
+	const ec = EventCalendar.create(document.getElementById('ec'), {
+	  view: 'timeGridWeek',
+	  headerToolbar: {
+		start: 'prev,next today',
+		center: 'title',
+		end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+	  },
+	  editable: true,
+	  selectable: true,
+	  lazyFetching: true, // Caches fetched date ranges automatically
+	  eventSources: [
+		{
+		  url: '/api/events',
+		  extraParams: {
+			userId: currentAccountId
+		  }
+		}
+	  ],
+	  eventClick(info) {
+		alert(`Clicked: ${info.event.title}`);
+	  }
+	});
+  </script>
     
 
 </body>
