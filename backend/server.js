@@ -93,9 +93,14 @@ app.post('/add-event', async (req, res) => {
   
   try {
 		const {rows} = await db.query(
-			`INSERT INTO event (creator_id, time, location, title, description)
-			VALUES ($1, $2, $3, $4, $5)
-			RETURNING *;
+			`WITH new_event AS (
+				INSERT INTO event (creator_id, time, location, title, description)
+				VALUES ($1, $2, $3, $4, $5)
+				RETURNING event_id, creator_id
+			)
+			INSERT INTO calendar(event_id, owner_id)
+			SELECT event_id, creator_id 
+			FROM new_event;
 			`, 
 			[creator_id, timestamp, location, title, description || null]
 		);
