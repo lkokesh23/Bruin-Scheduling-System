@@ -180,15 +180,18 @@ app.get('/:account_id', (req, res) => {
 });
 
 app.get('/api/events', async (req, res) => {
-	const {start, end} = req.query;
+	const {start, end, userId} = req.query;
 	
 	try {
 		const events = await db.query(
-		  `SELECT event_id, title, start_time AS start, 
+		  `SELECT event_id as id, title, start_time AS start, 
 		  COALESCE(end_time, start_time + INTERVAL '1 hour') AS "end" FROM event
 		   WHERE ($1::timestamp IS NULL OR start_time < $1::timestamp)
-		    AND ($2::timestamp IS NULL OR COALESCE(end_time, start_time + INTERVAL '1 hour') > $2::timestamp);`,
-			[end || null, start || null]
+		    AND ($2::timestamp IS NULL OR COALESCE(end_time, start_time + INTERVAL '1 hour') > $2::timestamp)
+			AND event_id IN 
+			(SELECT event_id FROM calendar
+			WHERE owner_id = $3);`,
+			[end || null, start || null, userId]
 		);
 		res.json(events.rows);
 	}
