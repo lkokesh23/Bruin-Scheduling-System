@@ -46,16 +46,6 @@ For our system, we will be storing user information, event dates and times, coll
 | Attribute | Data Type | Constraints |
 |---|---|---|
 | account_id | Integer | Primary Foreign Key |
-| office_hours | String | |
-| department | String | |
-
-## TA
-
-| Attribute | Data Type | Constraints |
-|---|---|---|
-| account_id | Integer | Primary Foreign Key |
-| professor_id | Integer | Foreign Key |
-| course_id | Integer | |
 
 ## Student
 | Attribute | Data Type | Constraints |
