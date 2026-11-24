@@ -88,22 +88,23 @@ app.get('/add-event/:account_id', (req, res) => {
 });
 
 app.post('/add-event', async (req, res) => {
-  const {creator_id, date, startTime, endTime, location, title, description} = req.body;
+  const {creator_id, date, startTime, endTime, location, title, description, isPublic} = req.body;
   const start_timestamp = `${date} ${startTime}`;
   const end_timestamp = `${date} ${endTime}`;
+  const is_public = isPublic === "public";
   
   try {
 		const {rows} = await db.query(
 			`WITH new_event AS (
-				INSERT INTO event (creator_id, start_time, end_time, location, title, description)
-				VALUES ($1, $2, $3, $4, $5, $6)
+				INSERT INTO event (creator_id, start_time, end_time, location, title, description, is_public)
+				VALUES ($1, $2, $3, $4, $5, $6, $7)
 				RETURNING event_id, creator_id
 			)
 			INSERT INTO calendar(event_id, owner_id)
 			SELECT event_id, creator_id 
 			FROM new_event;
 			`, 
-			[creator_id, start_timestamp, end_timestamp,  location, title, description || null]
+			[creator_id, start_timestamp, end_timestamp,  location, title, description || null, is_public]
 		);
 		return res.redirect(`/${creator_id}`);
   } catch (err) {
