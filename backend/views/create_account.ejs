@@ -101,6 +101,8 @@
                 id="emailInput"
                 name="email"
                 placeholder="Enter email"
+				pattern=".+@georgefox\.edu$"
+				value="<%= typeof email !== 'undefined' ? email : '' %>"
                 required>
         </div>
 
