@@ -55,14 +55,14 @@ function getAllEvents() {
     return events;
 }
 
-//currently working on a event that can be made for more then
+//Finished!
 //one week.
 function continueEvent(id, weeks)
 {
     let originalEvent = getEventById(id);
     if(originalEvent=== null)
     {
-        return "Event not found";
+        return "Event can't be found, please change your search!";
     }
     let createdEvents=[];
     let baseDate = new Date(originalEvent.date + "T00:00:00");
