@@ -40,7 +40,7 @@ function createAccount(username, email, password, major) {
 		} catch (err) {
 			console.error('Error inserting user:', err.stack);
 			
-			res status(500).json({ error: 'Internal Server Error' });
+			res.status(500).json({ error: 'Internal Server Error' });
 		}
 	});
 
@@ -75,7 +75,7 @@ function getUser(username) {
 }
 
 //Updates the user info
-funcion updateUser(userId,email,major){
+function updateUser(userId,email,major){
     let user = getUser(username);
     if(user === null){
         return "User not found.";
@@ -110,9 +110,9 @@ function changePassword(username, oldPassword, newPassword){
         return "User not found.";
     }
     if(user.password!== oldPassword){
-        return "Wrong Password")
+        return "Wrong Password";
     }
-    if(user.password==oldPassword{
+    if(user.password==oldPassword){
         return "You already used this password, enter a new one!"
     }
     user.password=newPassword;
@@ -204,7 +204,7 @@ function addUserEvent(username, eventId){
 }
 
 //removes an event
-function removeUserEvent(username eventId){
+function removeUserEvent(username, eventId){
 let user = getUser(username);
     if(user ===null){
         return "User not found.";

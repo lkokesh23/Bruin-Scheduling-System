@@ -82,36 +82,6 @@ app.post('/login', async(req, res) => {
   }
 })
 
-app.get('/add-event/:account_id', (req, res) => {
-	const {account_id} = req.params;
-  res.render('add_event.ejs', {account_id});
-});
-
-app.post('/add-event', async (req, res) => {
-  const {creator_id, date, startTime, endTime, location, title, description} = req.body;
-  const start_timestamp = `${date} ${startTime}`;
-  const end_timestamp = `${date} ${endTime}`;
-  
-  try {
-		const {rows} = await db.query(
-			`WITH new_event AS (
-				INSERT INTO event (creator_id, start_time, end_time, location, title, description)
-				VALUES ($1, $2, $3, $4, $5, $6)
-				RETURNING event_id, creator_id
-			)
-			INSERT INTO calendar(event_id, owner_id)
-			SELECT event_id, creator_id 
-			FROM new_event;
-			`, 
-			[creator_id, start_timestamp, end_timestamp,  location, title, description || null]
-		);
-		return res.redirect(`/${creator_id}`);
-  } catch (err) {
-	  console.error(err);
-	  res.status(500).send("Something went wrong with adding your event");
-  }
-});
-
 app.get('/create-account', (req, res) => {
   res.render('create_account.ejs')
 });
@@ -148,20 +118,50 @@ app.post('/create-account', async(req, res) => {
   }
 });
 
-app.get('/public-events', (req, res) => {
-  res.render('public_event_dir.ejs')
-});
-
 app.get('/forgot-password', (req, res) => {
   res.render('forgot_password.ejs')
 });
 
-app.get('/calendar/:userId', async (req, res) => {
-  const {userId} = req.params
-  try {
-    const userEvents = await fetchUserEvents(userId) || []
+app.get('/public-events', (req, res) => {
+  res.render('public_event_dir.ejs')
+});
 
-    console.log(userEvents, userId)
+app.get('/add-event/:account_id', (req, res) => {
+	const {account_id} = req.params;
+  res.render('add_event.ejs', {account_id});
+});
+
+app.post('/add-event', async (req, res) => {
+  const {creator_id, date, startTime, endTime, location, title, description} = req.body;
+  const start_timestamp = `${date} ${startTime}`;
+  const end_timestamp = `${date} ${endTime}`;
+  
+  try {
+		const {rows} = await db.query(
+			`WITH new_event AS (
+				INSERT INTO event (creator_id, start_time, end_time, location, title, description)
+				VALUES ($1, $2, $3, $4, $5, $6)
+				RETURNING event_id, creator_id
+			)
+			INSERT INTO calendar(event_id, owner_id)
+			SELECT event_id, creator_id 
+			FROM new_event;
+			`, 
+			[creator_id, start_timestamp, end_timestamp,  location, title, description || null]
+		);
+		return res.redirect(`/${creator_id}`);
+  } catch (err) {
+	  console.error(err);
+	  res.status(500).send("Something went wrong with adding your event");
+  }
+});
+
+app.get('/calendar/:account_id', async (req, res) => {
+  const {account_id} = req.params
+  try {
+    const userEvents = await fetchUserEvents(account_id) || []
+
+    console.log(userEvents, account_id)
 
     res.render('user_events', {userEvents})
   } catch (err) {
@@ -170,17 +170,8 @@ app.get('/calendar/:userId', async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-	res.redirect('/login');
-});
-
-app.get('/:account_id', (req, res) => {
-	const {account_id} = req.params;
-	res.render('home.ejs', {account_id});
-});
-
 app.get('/api/events', async (req, res) => {
-	const {start, end, userId} = req.query;
+	const {start, end, account_id} = req.query;
 	
 	try {
 		const events = await db.query(
@@ -191,7 +182,7 @@ app.get('/api/events', async (req, res) => {
 			AND event_id IN 
 			(SELECT event_id FROM calendar
 			WHERE owner_id = $3);`,
-			[end || null, start || null, userId]
+			[end || null, start || null, account_id]
 		);
 		res.json(events.rows);
 	}
@@ -201,6 +192,15 @@ app.get('/api/events', async (req, res) => {
 		res.status(500).send('Something went wrong making your calendar.');
 	}
 	
+});
+
+app.get('/', (req, res) => {
+	res.redirect('/login');
+});
+
+app.get('/:account_id', (req, res) => {
+	const {account_id} = req.params;
+	res.render('home.ejs', {account_id});
 });
 
 // Does it work?
